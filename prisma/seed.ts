@@ -1,9 +1,24 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 import { TransactionType } from "@prisma/client";
 
+async function resetDatabase() {
+  try {
+    await prisma.transaction.deleteMany();
+    await prisma.account.deleteMany();
+    await prisma.user.deleteMany();
+
+    console.log("Database has been reset.");
+  } catch (error) {
+    console.error("Error resetting the database:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 async function main() {
+  await resetDatabase();
   // Create Users
   const user1 = await prisma.user.create({
     data: {

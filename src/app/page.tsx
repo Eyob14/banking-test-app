@@ -3,8 +3,16 @@ import { ChevronRight } from 'lucide-react';
 import prisma from "@/lib/client";
 import { format } from 'date-fns';
 export default async function home() {
-  const account = await prisma.account.findFirst();
-  const transactions = await prisma.transaction.findMany();
+  const account = await prisma.account.findUnique({
+    where: { iban: "DE89370400440532013000" },
+  });
+  if (!account) {
+    return <div>Error: Account not found</div>;
+  }
+  const transactions = await prisma.transaction.findMany({
+    where: { accountId: account.id },
+    orderBy: { createdAt: 'desc' },
+  });
 
   return (
     <div className="w-full flex flex-col justify-center">

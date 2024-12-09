@@ -3,7 +3,9 @@ import prisma from "@/lib/client";
 import { SerializedAccount } from "@/utils/types";
 
 export default async function Deposit() {
-    const account = await prisma.account.findFirst();
+    const account = await prisma.account.findUnique({
+        where: { iban: "DE89370400440532013000" },
+    });
 
     if (!account) {
         return <div>Error: Account not found</div>;
