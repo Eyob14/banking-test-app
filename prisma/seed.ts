@@ -1,4 +1,6 @@
-import prisma from "@/app/lib/client";
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+
 import { TransactionType } from "@prisma/client";
 
 async function main() {
