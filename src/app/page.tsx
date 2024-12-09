@@ -3,7 +3,6 @@ import { ChevronRight } from 'lucide-react';
 import prisma from "@/lib/client";
 import { format } from 'date-fns';
 export default async function home() {
-  const user = await prisma.user.findFirst();
   const account = await prisma.account.findFirst();
   const transactions = await prisma.transaction.findMany();
 

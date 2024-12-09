@@ -14,12 +14,10 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { User } from "@prisma/client"
 import { SerializedAccount } from "@/utils/types"
 import { toast } from "react-toastify"
 
 interface IDepositFormProps {
-    user: User | null;
     account: SerializedAccount | null;
 }
 
@@ -28,7 +26,7 @@ const formSchema = z.object({
     recipientIban: z.string(),
 });
 
-export function TransferForm({ user, account }: IDepositFormProps) {
+export function TransferForm({ account }: IDepositFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -56,7 +54,8 @@ export function TransferForm({ user, account }: IDepositFormProps) {
                 throw new Error(error.error || "Failed to deposit");
             }
             toast("Transfer successful!")
-        } catch (error: any) {
+        } catch (error) {
+            console.log(error)
             toast.error("Please check recipient IBAN number and try again.");
         }
     }

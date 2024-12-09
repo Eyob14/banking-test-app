@@ -5,7 +5,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -19,8 +18,8 @@ const items = [
     icon: Home,
   },
   {
-    title: "Manage",
-    url: "/manage",
+    title: "Account",
+    url: "/account",
     icon: Inbox,
   },
 ]

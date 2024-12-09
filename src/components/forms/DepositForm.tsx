@@ -14,12 +14,10 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { User } from "@prisma/client"
 import { SerializedAccount } from "@/utils/types"
 import { toast } from "react-toastify"
 
 interface IDepositFormProps {
-    user: User | null;
     account: SerializedAccount | null;
 }
 
@@ -27,7 +25,7 @@ const formSchema = z.object({
     amount: z.preprocess((value) => parseFloat(value as string), z.number().min(10)),
 });
 
-export function DepositForm({ user, account }: IDepositFormProps) {
+export function DepositForm({ account }: IDepositFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -53,8 +51,8 @@ export function DepositForm({ user, account }: IDepositFormProps) {
                 throw new Error(error.error || "Failed to deposit");
             }
             toast("Deposit successful!")
-        } catch (error: any) {
-            console.error(error.message);
+        } catch (error) {
+            console.error(error);
             toast.error("Failed to deposit. Please try again.");
         }
     }
