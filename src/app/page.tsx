@@ -2,12 +2,12 @@ import Image from "next/image"
 import { ChevronRight } from 'lucide-react';
 import prisma from "@/lib/client";
 import { format } from 'date-fns';
+import { getAccount } from "@/utils/common";
 export default async function home() {
-  const account = await prisma.account.findUnique({
-    where: { iban: "DE89370400440532013000" },
-  });
+  const account = await getAccount("DE89370400440532013000");
+
   if (!account) {
-    return <div>Error: Account not found</div>;
+      return <div>Error: Account not found</div>;
   }
   const transactions = await prisma.transaction.findMany({
     where: { accountId: account.id },
@@ -39,7 +39,7 @@ export default async function home() {
                 <li key={transaction.id} className="flex flex-col justify-between gap-2 sm:flex-row  border border-1 py-3 px-3">
                   <span className="">{format(new Date(transaction.createdAt), "d MMM yyyy")}</span>
                   <span className="">{transaction.type}</span>
-                  <span className="">{transaction.amount.toString()} USD</span>
+                  <span className="">{`${transaction.type === "DEPOSIT" ? "+":"-"} ${transaction.amount.toString()} USD`}</span>
                 </li>
               ))
             }
