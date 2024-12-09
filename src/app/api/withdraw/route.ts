@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/client';
 import { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(req: NextRequest) {
     try {
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
                     accountId: accountId,
                 },
             });
-
+            revalidatePath("/")
             return { success: true };
         });
 

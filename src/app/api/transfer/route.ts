@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/client";
 import { Prisma } from "@prisma/client";
 import { isValidIBAN } from "@/utils/index";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: NextRequest) {
   try {
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
           recipientIban: recipientIban,
         },
       });
-
+      revalidatePath("/")
       return { success: true };
     });
 

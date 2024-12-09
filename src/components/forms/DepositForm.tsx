@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { SerializedAccount } from "@/utils/types"
 import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
 interface IDepositFormProps {
     account: SerializedAccount | null;
@@ -26,6 +27,8 @@ const formSchema = z.object({
 });
 
 export function DepositForm({ account }: IDepositFormProps) {
+    const router = useRouter()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -50,6 +53,7 @@ export function DepositForm({ account }: IDepositFormProps) {
                 const error = await response.json();
                 throw new Error(error.error || "Failed to deposit");
             }
+            router.push("/")
             toast("Deposit successful!")
         } catch (error) {
             console.error(error);
